@@ -14,8 +14,13 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "@vueuse/core": "^10.4.1",
+    "axios": "^1.5.0",
     "element-plus": "^2.3.14",
+    "mockjs": "^1.1.0",
     "pinia": "^2.1.6",
+    "sass": "^1.67.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
