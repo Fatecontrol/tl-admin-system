@@ -65,6 +65,12 @@ import type { AccountForm } from '../types/login-type'
 import type { FormInstance } from 'element-plus'
 import { accountFormRules } from '../rules'
 import { useGetImgCode } from '../composable'
+import { accountLogin } from '@/api/user'
+import utils from '@/utils/utils'
+import { useUserStore } from '@/stores'
+const store = useUserStore()
+import { useRouter } from 'vue-router'
+const router = useRouter()
 // 图形验证码
 const { imgCodeSrc, getImgCode } = useGetImgCode()
 import { useHandleSaveUser } from '../composable/account'
@@ -81,12 +87,38 @@ const accountForm = reactive<AccountForm>({
 const { saveLocalUserNameOrPas, getLocalUserNameOrPas } = useHandleSaveUser(accountForm)
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      saveLocalUserNameOrPas()
-      console.log('submit!')
-    } else {
-      console.log('error submit!', fields)
+  await formEl.validate(async (valid, fields) => {
+    if (!valid) {
+      for (let key in fields) {
+        console.log('key', key)
+        utils.showError(fields[key][0].message!)
+      }
+      return
+    }
+    saveLocalUserNameOrPas()
+    // 开启loading
+    utils.openLoading()
+    // 调用登录接口
+    try {
+      const res = await accountLogin({
+        username: accountForm.username,
+        password: accountForm.password,
+        imgcode: accountForm.imgcode
+      })
+      if (res.code === 888) {
+        // 存储Token 存储userInfo
+        store.setToken(res.token!)
+        store.setuser(res.data!)
+        // 跳转到主页
+        router.push('/')
+      } else {
+        // console.log(res)
+
+        console.log(res.message)
+      }
+    } finally {
+      // 关闭loading
+      utils.closeLoading()
     }
   })
 }

@@ -1,7 +1,7 @@
 import './styles/default.scss'
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import pinia from './stores'
 
 import App from './App.vue'
 import router from './router'
@@ -10,11 +10,14 @@ import router from './router'
 import { globalRegister } from './global/index'
 
 // 引入mockjs
-// import './mock'
+import './mock'
+
+// 引入权限文件
+import './permission'
 
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 app.use(globalRegister)

@@ -1,6 +1,11 @@
 // 引入axios
-import axios from 'axios'
-
+import axios, {
+  type AxiosRequestConfig,
+  type AxiosResponse,
+  type InternalAxiosRequestConfig
+} from 'axios'
+import type { Data } from '@/types/request'
+import utils from './utils'
 // 创建axios实例对象
 const api = axios.create({
   baseURL: '',
@@ -21,5 +26,43 @@ const api = axios.create({
   responseEncoding: 'utf8' // 默认值
 })
 
+// 请求拦截
+api.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+api.interceptors.response.use(
+  (response: AxiosResponse) => {
+    if (response.status === 200) {
+      const data = response.data
+      if (data.code !== 888) {
+        return utils.showError(data.message || '发生错误')
+      }
+      return data
+    }
+    if (response.status === 401) {
+      // Token过期处理
+      return
+    }
+    utils.showError('请求失败')
+  },
+  (error) => {
+    utils.showError(error.response.statusText || '请求失败')
+    return Promise.reject(error)
+  }
+)
+
+const request = <T>(config: AxiosRequestConfig) => {
+  if (config.method?.toLocaleLowerCase() === 'get') {
+    config.params = config.data
+    delete config.data
+  }
+  return api.request<T, Data<T>>(config)
+}
+
 // 导出axios实例对戏那个
-export default api
+export default request
