@@ -26,8 +26,11 @@ const asideWidth = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+.el-aside::-webkit-scrollbar {
+  width: 0;
+}
 .layout-container {
-  height: 100%;
+  height: 100vh;
   .el-aside {
     background-color: var(--junjun-topbar-bg);
     transition: width 0.4s linear;

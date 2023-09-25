@@ -57,6 +57,13 @@ const handleCloseTag = (item: TagsType, index: number) => {
 .tag::-webkit-scrollbar {
   height: 0;
 }
+// .tag:hover::-webkit-scrollbar {
+//   height: 10px;
+// }
+// .tag::-webkit-scrollbar-thumb {
+//   background: #ccc; /* 滚动条thumb颜色 */
+//   border-radius: 5px; /* 滚动条thumb圆角 */
+// }
 
 .tag {
   flex: 1;
