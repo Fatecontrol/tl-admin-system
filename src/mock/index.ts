@@ -5,6 +5,7 @@ import './MenuData'
 
 // 导入数据
 import user from './userData'
+import './demoData'
 
 // 登录接口
 Mock.mock('/api/login/username', (options: any) => {
@@ -34,5 +35,33 @@ Mock.mock('/api/login/username', (options: any) => {
   return {
     code: 102,
     message: '用户名或密码错误'
+  }
+})
+
+// 获取表格数据
+Mock.mock('/api/table/list', () => {
+  return {
+    code: 888,
+    message: '',
+    data: [
+      {
+        date: '2016-05-03',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+        remark: '111'
+      },
+      {
+        date: '2016-05-04',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+        remark: '222'
+      },
+      {
+        date: '2016-05-01',
+        name: 'Tom',
+        address: 'No. 189, Grove St, Los Angeles',
+        remark: '333'
+      }
+    ]
   }
 })
